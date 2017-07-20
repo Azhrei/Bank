@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import exception.AccountDataException;
+
 public class TestBankAccount {
 	BankAccount ba;
 	static BankDB db;
@@ -129,22 +131,22 @@ public class TestBankAccount {
 		assertFalse("Withdraw succeeded but should have failed due to session limit", retVal);
 	}
 
-	@Test(expected = java.lang.AssertionError.class)
+	@Test(expected = AccountDataException.class)
 	public void testAccountData01() {
 		new MyAcct(db, 6666);
 	}
 
-	@Test(expected = java.lang.AssertionError.class)
+	@Test(expected = AccountDataException.class)
 	public void testAccountData02() {
 		new MyAcct(db, 7777);
 	}
 
-	@Test(expected = java.lang.AssertionError.class)
+	@Test(expected = AccountDataException.class)
 	public void testAccountData03() {
 		new MyAcct(db, 8888);
 	}
 
-	@Test(expected = java.lang.AssertionError.class)
+	@Test(expected = AccountDataException.class)
 	public void testAccountData04() {
 		new MyAcct(db, 9999);
 	}
