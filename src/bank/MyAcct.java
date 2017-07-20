@@ -11,12 +11,18 @@ public class MyAcct implements BankAccount {
 	public MyAcct(BankDB db, int actnum) {
 		int[] data = db.getData(actnum);
 		assert(data != null);
+		assert(data[0] == 0 || data[0] == 1);
 		open = (data[0] == 0);
 		balance = data[1];
 		available_balance = data[2];
 		transaction_limit = data[3];
 		session_limit = data[4];
 		total_this_session = 0;
+		
+		assert(balance >= 0);
+		assert(available_balance >= 0 && available_balance <= balance);
+		assert(transaction_limit <= session_limit);
+		assert(total_this_session <= session_limit);
 	}
 
 	@Override

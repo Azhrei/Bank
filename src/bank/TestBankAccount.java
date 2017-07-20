@@ -31,7 +31,7 @@ public class TestBankAccount {
 
 	@Test(expected = exception.NoSuchAccountException.class)
 	public void testAccountExists() {
-		ba = new MyAcct(db, 6666);
+		ba = new MyAcct(db, 1234);
 	}
 
 	@Test
@@ -127,5 +127,25 @@ public class TestBankAccount {
 		}
 		retVal = ba.withdraw(100);
 		assertFalse("Withdraw succeeded but should have failed due to session limit", retVal);
+	}
+
+	@Test(expected = java.lang.AssertionError.class)
+	public void testAccountData01() {
+		new MyAcct(db, 6666);
+	}
+
+	@Test(expected = java.lang.AssertionError.class)
+	public void testAccountData02() {
+		new MyAcct(db, 7777);
+	}
+
+	@Test(expected = java.lang.AssertionError.class)
+	public void testAccountData03() {
+		new MyAcct(db, 8888);
+	}
+
+	@Test(expected = java.lang.AssertionError.class)
+	public void testAccountData04() {
+		new MyAcct(db, 9999);
 	}
 }
