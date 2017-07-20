@@ -1,0 +1,131 @@
+package bank;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class TestBankAccount {
+	BankAccount ba;
+	static BankDB db;
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		db = new MockDB();
+	}
+
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
+
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testAccountExists() {
+		ba = new MyAcct(db, 6666);
+	}
+
+	@Test
+	public void testBalance01() {
+		ba = new MyAcct(db, 5555);
+		int retVal = ba.getBalance();
+		assertEquals("Incorrect available balance", 0, retVal);
+	}
+
+	@Test
+	public void testBalance02() {
+		ba = new MyAcct(db, 2222);
+		int retVal = ba.getBalance();
+		assertEquals("Incorrect available balance", 587, retVal);
+	}
+
+	@Test
+	public void testAvailBalance01() {
+		ba = new MyAcct(db, 5555);
+		int retVal = ba.getAvailBalance();
+		assertEquals("Incorrect available balance", 0, retVal);
+	}
+
+	@Test
+	public void testAvailBalance02() {
+		ba = new MyAcct(db, 4444);
+		int retVal = ba.getAvailBalance();
+		assertEquals("Incorrect available balance", 0, retVal);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testAvailBalance03() {
+		ba = new MyAcct(db, 2222);
+		ba.getAvailBalance();
+	}
+
+	@Test
+	public void testDeposit01() {
+		ba = new MyAcct(db, 4444);
+		int current = ba.getBalance();
+		boolean retVal = ba.deposit(100);
+		assertTrue("Deposit failed", retVal);
+		int difference = ba.getBalance() - current;
+		assertEquals("Deposit didn't adjust balance correctly", 100, difference);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testDeposit02() {
+		ba = new MyAcct(db, 2222);
+		ba.deposit(100);
+	}
+
+	@Test
+	public void testDeposit03() {
+		ba = new MyAcct(db, 4444);
+		boolean retVal = ba.deposit(-100);
+		assertFalse("Deposit of negative amount succeeded!?!?", retVal);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testWithdraw01() {
+		ba = new MyAcct(db, 2222);
+		ba.withdraw(100);
+	}
+
+	@Test
+	public void testWithdraw02() {
+		ba = new MyAcct(db, 4444);
+		boolean retVal = ba.withdraw(-100);
+		assertFalse("Withdraw of negative amount succeeded!?!?", retVal);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testWithdraw03() {
+		ba = new MyAcct(db, 4444);
+		ba.withdraw(497);
+	}
+
+	@Test
+	public void testWithdraw04() {
+		ba = new MyAcct(db, 1111);
+		boolean retVal = ba.withdraw(200);
+		assertFalse("Withdraw allowed transaction limit to be exceeded", retVal);
+	}
+
+	@Test
+	public void testWithdraw05() {
+		ba = new MyAcct(db, 1111);
+		boolean retVal;
+		for (int i = 0; i < 5; i++) {
+			retVal = ba.withdraw(100);
+			assertTrue("Withdraw failed", retVal);
+		}
+		retVal = ba.withdraw(100);
+		assertFalse("Withdraw succeeded but should have failed due to session limit", retVal);
+	}
+}
