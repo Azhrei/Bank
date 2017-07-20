@@ -25,7 +25,7 @@ public class MyAcct implements BankAccount {
 	@Override
 	public int getAvailBalance() {
 		if (!open && available_balance != 0)
-			throw new IllegalArgumentException("Closed account with non-zero available balance!");
+			throw new IllegalArgumentException("Closed account with non-zero available balance");
 		return available_balance;
 	}
 
