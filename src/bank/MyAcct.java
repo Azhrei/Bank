@@ -32,7 +32,7 @@ public class MyAcct implements BankAccount {
 	@Override
 	public boolean deposit(int amt) throws IllegalArgumentException {
 		if (!open)
-			throw new IllegalArgumentException("Closed account during deposit!");
+			throw new IllegalArgumentException("Closed account during deposit");
 		if (amt < 0)
 			return false;
 		balance = balance + amt;
