@@ -1,5 +1,7 @@
 package bank;
 
+import java.util.Date;
+
 import exception.AccountDataException;
 
 public class MyAcct implements BankAccount {
@@ -20,7 +22,7 @@ public class MyAcct implements BankAccount {
 		transaction_limit = data[3];
 		session_limit = data[4];
 		total_this_session = 0;
-
+		
 		if (balance < 0)
 			throw new AccountDataException("Invalid balance");
 		if (!(available_balance >= 0 && available_balance <= balance))

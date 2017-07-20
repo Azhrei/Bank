@@ -1,5 +1,10 @@
 package bank;
 
+/*
+ * Rod Davison has made the two ZIP files in the support/ directory
+ * available on GitHub.com.
+ */
+
 import static org.junit.Assert.*;
 
 import org.junit.After;
