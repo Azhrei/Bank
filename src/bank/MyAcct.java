@@ -1,7 +1,5 @@
 package bank;
 
-import java.util.Date;
-
 import exception.AccountDataException;
 
 public class MyAcct implements BankAccount {
