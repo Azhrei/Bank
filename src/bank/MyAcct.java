@@ -21,7 +21,7 @@ public class MyAcct implements BankAccount {
 		session_limit = data[4];
 		total_this_session = 0;
 
-		if (!(balance >= 0))
+		if (balance < 0)
 			throw new AccountDataException("Invalid balance");
 		if (!(available_balance >= 0 && available_balance <= balance))
 			throw new AccountDataException("Invalid available balance");
