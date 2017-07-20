@@ -1,5 +1,7 @@
 package bank;
 
+import exception.AccountDataException;
+
 public class MyAcct implements BankAccount {
 	private boolean open; // Contains yellow underlines
 	private int balance;
@@ -10,19 +12,23 @@ public class MyAcct implements BankAccount {
 
 	public MyAcct(BankDB db, int actnum) {
 		int[] data = db.getData(actnum);
-		assert(data != null);
-		assert(data[0] == 0 || data[0] == 1);
+		assert (data != null);
+		assert (data[0] == 0 || data[0] == 1);
 		open = (data[0] == 0);
 		balance = data[1];
 		available_balance = data[2];
 		transaction_limit = data[3];
 		session_limit = data[4];
 		total_this_session = 0;
-		
-		assert(balance >= 0);
-		assert(available_balance >= 0 && available_balance <= balance);
-		assert(transaction_limit <= session_limit);
-		assert(total_this_session <= session_limit);
+
+		if (balance >= 0)
+			throw new AccountDataException("Invalid balance");
+		if (available_balance >= 0 && available_balance <= balance)
+			throw new AccountDataException("Invalid available balance");
+		if (transaction_limit <= session_limit)
+			throw new AccountDataException("Invalid transaction limit");
+		if (total_this_session <= session_limit)
+			throw new AccountDataException("Invalid balance");
 	}
 
 	@Override
@@ -64,9 +70,9 @@ public class MyAcct implements BankAccount {
 		available_balance -= amt;
 		total_this_session += amt;
 
-//		balance = balance - amt;
-//		available_balance = available_balance - amt;
-//		total_this_session = total_this_session + amt;
+		// balance = balance - amt;
+		// available_balance = available_balance - amt;
+		// total_this_session = total_this_session + amt;
 		return true;
 	}
 
