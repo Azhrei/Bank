@@ -1,13 +1,10 @@
 package bank;
 
-/*
- * Rod Davison has made the two ZIP files in the support/ directory
- * available on GitHub.com at https://github.com/exgnosis/TDD-Files-for-Frank
- */
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+// No need for these imports after converting all to AssertJ...
+//import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertFalse;
+//import static org.junit.Assert.assertThat;
+//import static org.junit.Assert.assertTrue;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -19,6 +16,10 @@ import org.junit.Test;
 
 import exception.AccountDataException;
 
+/**
+ * Rod Davison has made the two ZIP files in the support/ directory
+ * available on GitHub.com at {@link https://github.com/exgnosis/TDD-Files-for-Frank}
+ */
 public class TestBankAccount {
 	BankAccount ba;
 	static BankDB db;
@@ -104,8 +105,9 @@ public class TestBankAccount {
 	@Test
 	public void testDeposit03() {
 		ba = new MyAcct(db, 4444);
-		boolean retVal = ba.deposit(-100);
-		assertFalse("Deposit of negative amount succeeded!?!?", retVal);
+		assertThat(ba.deposit(-100)).as("Deposit of negative amount succeeded").isFalse();
+//		boolean retVal = ba.deposit(-100);
+//		assertFalse("Deposit of negative amount succeeded!?!?", retVal);
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
@@ -117,8 +119,9 @@ public class TestBankAccount {
 	@Test
 	public void testWithdraw02() {
 		ba = new MyAcct(db, 4444);
-		boolean retVal = ba.withdraw(-100);
-		assertFalse("Withdraw of negative amount succeeded!?!?", retVal);
+//		boolean retVal = ba.withdraw(-100);
+//		assertFalse("Withdraw of negative amount succeeded!?!?", retVal);
+		assertThat(ba.withdraw(-100)).as("Withdraw of negative amount succeeded").isFalse();
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
@@ -130,20 +133,23 @@ public class TestBankAccount {
 	@Test
 	public void testWithdraw04() {
 		ba = new MyAcct(db, 1111);
-		boolean retVal = ba.withdraw(200);
-		assertFalse("Withdraw allowed transaction limit to be exceeded", retVal);
+//		boolean retVal = ba.withdraw(200);
+//		assertFalse("Withdraw allowed transaction limit to be exceeded", retVal);
+		assertThat(ba.withdraw(200)).as("Withdraw allowed transaction limit to be exceeded").isFalse();
 	}
 
 	@Test
 	public void testWithdraw05() {
 		ba = new MyAcct(db, 1111);
-		boolean retVal;
+//		boolean retVal;
 		for (int i = 0; i < 5; i++) {
-			retVal = ba.withdraw(100);
-			assertTrue("Withdraw failed", retVal);
+//			retVal = ba.withdraw(100);
+//			assertTrue("Withdraw failed", retVal);
+			assertThat(ba.withdraw(100)).as("Withdraw failed").isTrue();
 		}
-		retVal = ba.withdraw(100);
-		assertFalse("Withdraw succeeded but should have failed due to session limit", retVal);
+//		retVal = ba.withdraw(100);
+//		assertFalse("Withdraw succeeded but should have failed due to session limit", retVal);
+		assertThat(ba.withdraw(100)).as("Withdraw succeeded but should have failed due to session limit").isFalse();
 	}
 
 	@Test(expected = AccountDataException.class)
