@@ -2,10 +2,14 @@ package bank;
 
 /*
  * Rod Davison has made the two ZIP files in the support/ directory
- * available on GitHub.com.
+ * available on GitHub.com at https://github.com/exgnosis/TDD-Files-for-Frank
  */
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -44,29 +48,33 @@ public class TestBankAccount {
 	@Test
 	public void testBalance01() {
 		ba = new MyAcct(db, 5555);
-		int retVal = ba.getBalance();
-		assertEquals("Incorrect available balance", 0, retVal);
+		assertThat(ba.getBalance()).as("Incorrect available balance").isEqualTo(0);
+//		int retVal = ba.getBalance();
+//		assertEquals("Incorrect available balance", 0, retVal);
 	}
 
 	@Test
 	public void testBalance02() {
 		ba = new MyAcct(db, 2222);
-		int retVal = ba.getBalance();
-		assertEquals("Incorrect available balance", 587, retVal);
+		assertThat(ba.getBalance()).as("Incorrect available balance").isEqualTo(587);
+//		int retVal = ba.getBalance();
+//		assertEquals("Incorrect available balance", 587, retVal);
 	}
 
 	@Test
 	public void testAvailBalance01() {
 		ba = new MyAcct(db, 5555);
-		int retVal = ba.getAvailBalance();
-		assertEquals("Incorrect available balance", 0, retVal);
+		assertThat(ba.getBalance()).as("Incorrect available balance").isEqualTo(0);
+//		int retVal = ba.getAvailBalance();
+//		assertEquals("Incorrect available balance", 0, retVal);
 	}
 
 	@Test
 	public void testAvailBalance02() {
 		ba = new MyAcct(db, 4444);
-		int retVal = ba.getAvailBalance();
-		assertEquals("Incorrect available balance", 0, retVal);
+		assertThat(ba.getBalance()).as("Incorrect available balance").isEqualTo(397);
+//		int retVal = ba.getAvailBalance();
+//		assertEquals("Incorrect available balance", 0, retVal);
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
@@ -80,9 +88,11 @@ public class TestBankAccount {
 		ba = new MyAcct(db, 4444);
 		int current = ba.getBalance();
 		boolean retVal = ba.deposit(100);
-		assertTrue("Deposit failed", retVal);
 		int difference = ba.getBalance() - current;
-		assertEquals("Deposit didn't adjust balance correctly", 100, difference);
+//		assertTrue("Deposit failed", retVal);
+//		assertEquals("Deposit didn't adjust balance correctly", 100, difference);
+		assertThat(retVal).as("Deposit failed").isTrue();
+		assertThat(difference).as("Deposit didn't adjust balance correctly").isEqualTo(100);
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
