@@ -1,9 +1,11 @@
 package bank;
 
+import exception.NoSuchAccountException;
+
 public class MockDB implements BankDB {
 
 	@Override
-	public int[] getData(int actnum) throws IllegalArgumentException {
+	public int[] getData(int actnum) throws NoSuchAccountException {
 		int[][] data = {
 				{ 0, 1000, 1000,  100,   500, 1111 },
 				{ 1,  587,  346,  100,   800, 2222 },
@@ -15,7 +17,7 @@ public class MockDB implements BankDB {
 			if (row[5] == actnum)
 				return row;
 		}
-		throw new IllegalArgumentException("Account data not found");
+		throw new NoSuchAccountException("Account data not found");
 	}
 
 	@Override

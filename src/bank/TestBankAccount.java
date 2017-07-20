@@ -29,7 +29,7 @@ public class TestBankAccount {
 	public void tearDown() throws Exception {
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test(expected = exception.NoSuchAccountException.class)
 	public void testAccountExists() {
 		ba = new MyAcct(db, 6666);
 	}
