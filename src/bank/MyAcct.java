@@ -42,7 +42,7 @@ public class MyAcct implements BankAccount {
 	@Override
 	public boolean withdraw(int amt) throws IllegalArgumentException {
 		if (!open)
-			throw new IllegalArgumentException("Closed account during withdraw!");
+			throw new IllegalArgumentException("Closed account during withdraw");
 		if (amt < 0)
 			return false;
 		if (amt > balance || amt > available_balance)
