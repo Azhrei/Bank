@@ -10,11 +10,13 @@ public class MyAcct implements BankAccount {
 
 	public MyAcct(BankDB db, int actnum) {
 		int[] data = db.getData(actnum);
+		assert(data != null);
 		open = (data[0] == 0);
 		balance = data[1];
 		available_balance = data[2];
 		transaction_limit = data[3];
 		session_limit = data[4];
+		total_this_session = 0;
 	}
 
 	@Override
