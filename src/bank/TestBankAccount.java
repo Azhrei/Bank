@@ -34,6 +34,17 @@ import mockit.integration.junit4.JMockit;
  * Test methods may contain commented out assertions for JUnit.  If so,
  * they represent code that is no longer necessary after implementing
  * Lab 6-1 using AssertJ.
+ * 
+ * For Lab 6-3, to run JUnit from the command line on macOS Sierra
+ * I had to use a command line that included all necessary JAR files, then
+ * specify the name of the JUnit class that contained <code>main()</code>
+ * and add the test class name at the end (this is one long line):
+ * <br/>
+ * <code>java
+ * -cp
+ * /Users/frank/.m2/repository/junit/junit/4.12/junit-4.12.jar:/Users/frank/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:../support/assertj-core-3.8.0.jar:../support/jmockit-1.8.jar:.
+ * org.junit.runner.JUnitCore
+ * bank.TestBankAccount</code>
  */
 @RunWith(JMockit.class)
 public class TestBankAccount {
