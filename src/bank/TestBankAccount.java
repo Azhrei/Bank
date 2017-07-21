@@ -88,7 +88,7 @@ public class TestBankAccount {
 	 * @param mockeddb - mocked object injected by Jmockit
 	 */
 	@Test
-	public void testBalance01(@Mocked MockDB mockeddb) {
+	public void testBalance01(@Mocked BankDB mockeddb) {
 		new Expectations() {
 			{
 				mockeddb.getData(5555); result = new int[] { 0, 999, 999, 999, 9999 };
