@@ -13,13 +13,29 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import exception.AccountDataException;
+import mockit.Expectations;
+import mockit.Mocked;
+import mockit.integration.junit4.JMockit;
 
 /**
  * Rod Davison has made the two ZIP files in the support/ directory
- * available on GitHub.com at {@link https://github.com/exgnosis/TDD-Files-for-Frank}
+ * available on GitHub.com; see
+ * <a href="https://github.com/exgnosis/TDD-Files-for-Frank">https://github.com/exgnosis/TDD-Files-for-Frank</a>
+ * <p>
+ * The following class uses the Jmockit annotation <code>@RunWith</code>.
+ * This annotation causes JUnit to use Jmockit to process the class.  This is
+ * necessary to allow Jmockit to review any annotations that it uses, such as
+ * <code>@Tested</code> and <code>@Mocked</code>.
+ * We use the latter in {@link #testBalance01(MockDB)}.
+ * <p>
+ * Test methods may contain commented out assertions for JUnit.  If so,
+ * they represent code that is no longer necessary after implementing
+ * Lab 6-1 using AssertJ.
  */
+@RunWith(JMockit.class)
 public class TestBankAccount {
 	BankAccount ba;
 	static BankDB db;
@@ -46,10 +62,29 @@ public class TestBankAccount {
 		ba = new MyAcct(db, 1234);
 	}
 
+	/**
+	 * This method uses Jmockit to create a mocked BankDB object.
+	 * Note the use of the @Mocked annotation on the parameter.
+	 * Normally, test methods are called without parameters, but Jmockit
+	 * arranges for mock objects to be created on the fly if they appear
+	 * as parameters.  This is ideal because the mocked object is scoped
+	 * to just this method.  If a mocked object should last longer, such as
+	 * for the entire execution of the class, then declare the mocked object
+	 * as an instance member with @Mocked and use Expectations in the
+	 * instance initializer for the class.  (Read about static and instance
+	 * initializers <a href="http://www.javaworld.com/article/3040564/learn-java/java-101-class-and-object-initialization-in-java.html">
+	 * in this article at JavaWorld.com</a>.)
+	 * @param mockeddb - mocked object injected by Jmockit
+	 */
 	@Test
-	public void testBalance01() {
-		ba = new MyAcct(db, 5555);
-		assertThat(ba.getBalance()).as("Incorrect available balance").isEqualTo(0);
+	public void testBalance01(@Mocked MockDB mockeddb) {
+		new Expectations() {
+			{
+				mockeddb.getData(5555); result = new int[] { 0, 999, 999, 999, 9999 };
+			}
+		};
+		BankAccount myba = new MyAcct(mockeddb, 5555);
+		assertThat(myba.getBalance()).as("Incorrect available balance").isEqualTo(999);
 //		int retVal = ba.getBalance();
 //		assertEquals("Incorrect available balance", 0, retVal);
 	}
