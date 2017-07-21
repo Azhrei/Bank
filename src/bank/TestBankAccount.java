@@ -133,9 +133,9 @@ public class TestBankAccount {
 	@Test
 	public void testDeposit01() {
 		ba = new MyAcct(db, 4444);
-		int current = ba.getBalance();
-		boolean retVal = ba.deposit(100);
-		int difference = ba.getBalance() - current;
+		Currency current = ba.getBalance();
+		boolean retVal = ba.deposit(new Currency(100));
+		int difference = ba.getBalance().getAmount() - current.getAmount();
 //		assertTrue("Deposit failed", retVal);
 //		assertEquals("Deposit didn't adjust balance correctly", 100, difference);
 		assertThat(retVal).as("Deposit failed").isTrue();

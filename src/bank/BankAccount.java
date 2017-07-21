@@ -1,8 +1,8 @@
 package bank;
 
 public interface BankAccount {
-	public int getBalance();
-	public int getAvailBalance();
+	public Currency getBalance();
+	public Currency getAvailBalance();
 	
 	/**
 	 * Adds the given amount to the bank account object's balance.  Does
@@ -14,7 +14,7 @@ public interface BankAccount {
 	 * @param amt - amount to deposit (must be non-negative)
 	 * @return true if deposit amount successfully applied
 	 */
-	public boolean deposit(int amt) throws IllegalArgumentException;
+	public Receipt deposit(Currency amt) throws IllegalArgumentException;
 	
 	/**
 	 * Reduces the balance in this bank account object, and returns a true/false status.
@@ -30,5 +30,5 @@ public interface BankAccount {
 	 * @param amt - amount to withdraw (must be non-negative)
 	 * @return true if withdraw amount successfully applied
 	 */
-	public boolean withdraw(int amt) throws IllegalArgumentException;
+	public Receipt withdraw(Currency amt) throws IllegalArgumentException;
 }
