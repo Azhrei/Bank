@@ -21,10 +21,10 @@ import mockit.integration.junit4.JMockit;
 @RunWith(JMockit.class)
 public class TestBankAccount {
 	@Test
-	public void testBalance01(@Mocked MockDB db) {
+	public void testBalance01(@Mocked BankDB db) {
 		new Expectations() {
 			{
-					db.getData(5555); result = new int[] { 999, 999, 999, 999, 9999 };
+					db.getData(5555); result = new int[] { 0, 999, 999, 999, 9999 };
 			}
 		};
 		BankAccount ba = new MyAcct(db, 5555);
