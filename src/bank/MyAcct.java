@@ -13,7 +13,7 @@ public class MyAcct implements BankAccount {
 	public MyAcct(BankDB db, int actnum) {
 		int[] data = db.getData(actnum);
 		assert (data != null);
-		assert (data[0] == 0 || data[0] == 1);
+//		assert (data[0] == 0 || data[0] == 1);
 		open = (data[0] == 0);
 		balance = data[1];
 		available_balance = data[2];
