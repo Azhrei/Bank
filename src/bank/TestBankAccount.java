@@ -95,7 +95,7 @@ public class TestBankAccount {
 			}
 		};
 		BankAccount myba = new MyAcct(mockeddb, 5555);
-		assertThat(myba.getBalance()).as("Incorrect available balance").isEqualTo(999);
+		assertThat(myba.getBalance().getAmount()).as("Incorrect available balance").isEqualTo(999);
 //		int retVal = ba.getBalance();
 //		assertEquals("Incorrect available balance", 0, retVal);
 	}
@@ -103,7 +103,7 @@ public class TestBankAccount {
 	@Test
 	public void testBalance02() {
 		ba = new MyAcct(db, 2222);
-		assertThat(ba.getBalance()).as("Incorrect available balance").isEqualTo(587);
+		assertThat(ba.getBalance().getAmount()).as("Incorrect available balance").isEqualTo(587);
 //		int retVal = ba.getBalance();
 //		assertEquals("Incorrect available balance", 587, retVal);
 	}
@@ -111,7 +111,7 @@ public class TestBankAccount {
 	@Test
 	public void testAvailBalance01() {
 		ba = new MyAcct(db, 5555);
-		assertThat(ba.getBalance()).as("Incorrect available balance").isEqualTo(0);
+		assertThat(ba.getBalance().getAmount()).as("Incorrect available balance").isEqualTo(0);
 //		int retVal = ba.getAvailBalance();
 //		assertEquals("Incorrect available balance", 0, retVal);
 	}
@@ -119,7 +119,7 @@ public class TestBankAccount {
 	@Test
 	public void testAvailBalance02() {
 		ba = new MyAcct(db, 4444);
-		assertThat(ba.getBalance()).as("Incorrect available balance").isEqualTo(397);
+		assertThat(ba.getBalance().getAmount()).as("Incorrect available balance").isEqualTo(397);
 //		int retVal = ba.getAvailBalance();
 //		assertEquals("Incorrect available balance", 0, retVal);
 	}
@@ -134,24 +134,24 @@ public class TestBankAccount {
 	public void testDeposit01() {
 		ba = new MyAcct(db, 4444);
 		Currency current = ba.getBalance();
-		boolean retVal = ba.deposit(new Currency(100));
+		Receipt retVal = ba.deposit(new Currency(100));
 		int difference = ba.getBalance().getAmount() - current.getAmount();
 //		assertTrue("Deposit failed", retVal);
 //		assertEquals("Deposit didn't adjust balance correctly", 100, difference);
-		assertThat(retVal).as("Deposit failed").isTrue();
+		assertThat(retVal.isSuccess()).as("Deposit failed").isTrue();
 		assertThat(difference).as("Deposit didn't adjust balance correctly").isEqualTo(100);
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testDeposit02() {
 		ba = new MyAcct(db, 2222);
-		ba.deposit(100);
+		ba.deposit(new Currency(100));
 	}
 
 	@Test
 	public void testDeposit03() {
 		ba = new MyAcct(db, 4444);
-		assertThat(ba.deposit(-100)).as("Deposit of negative amount succeeded").isFalse();
+		assertThat(ba.deposit(new Currency(-100))).as("Deposit of negative amount succeeded").isNull();
 //		boolean retVal = ba.deposit(-100);
 //		assertFalse("Deposit of negative amount succeeded!?!?", retVal);
 	}
@@ -159,7 +159,7 @@ public class TestBankAccount {
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testWithdraw01() {
 		ba = new MyAcct(db, 2222);
-		ba.withdraw(100);
+		ba.withdraw(new Currency(100));
 	}
 
 	@Test
@@ -167,13 +167,13 @@ public class TestBankAccount {
 		ba = new MyAcct(db, 4444);
 //		boolean retVal = ba.withdraw(-100);
 //		assertFalse("Withdraw of negative amount succeeded!?!?", retVal);
-		assertThat(ba.withdraw(-100)).as("Withdraw of negative amount succeeded").isFalse();
+		assertThat(ba.withdraw(new Currency(-100))).as("Withdraw of negative amount succeeded").isNull();
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testWithdraw03() {
 		ba = new MyAcct(db, 4444);
-		ba.withdraw(497);
+		ba.withdraw(new Currency(497));
 	}
 
 	@Test
@@ -181,7 +181,7 @@ public class TestBankAccount {
 		ba = new MyAcct(db, 1111);
 //		boolean retVal = ba.withdraw(200);
 //		assertFalse("Withdraw allowed transaction limit to be exceeded", retVal);
-		assertThat(ba.withdraw(200)).as("Withdraw allowed transaction limit to be exceeded").isFalse();
+		assertThat(ba.withdraw(new Currency(200))).as("Withdraw allowed transaction limit to be exceeded").isNull();
 	}
 
 	@Test
@@ -191,11 +191,11 @@ public class TestBankAccount {
 		for (int i = 0; i < 5; i++) {
 //			retVal = ba.withdraw(100);
 //			assertTrue("Withdraw failed", retVal);
-			assertThat(ba.withdraw(100)).as("Withdraw failed").isTrue();
+			assertThat(ba.withdraw(new Currency(100)).isSuccess()).as("Withdraw failed").isTrue();
 		}
 //		retVal = ba.withdraw(100);
 //		assertFalse("Withdraw succeeded but should have failed due to session limit", retVal);
-		assertThat(ba.withdraw(100)).as("Withdraw succeeded but should have failed due to session limit").isFalse();
+		assertThat(ba.withdraw(new Currency(100))).as("Withdraw succeeded but should have failed due to session limit").isNull();
 	}
 
 	@Test(expected = AccountDataException.class)
